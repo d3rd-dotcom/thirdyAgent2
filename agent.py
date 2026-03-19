@@ -5,8 +5,10 @@
 |         13 Skills: including learn, share, memory, social           |
 ++
 
-HOW TO RUN:
-  python agent.py
+OPTIONAL: Add Llama AI for smarter replies
+  1. Get free API key at: https://console.groq.com
+  2. Set GROQ_API_KEY below
+  3. If left empty, bot uses built-in smart replies
 """
 
 import random
