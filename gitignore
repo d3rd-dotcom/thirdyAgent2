@@ -1,0 +1,8 @@
+agent_memory.json
+agent_knowledge.json
+replied_ids.txt
+greeted_agents.txt
+*.exe
+__pycache__/
+*.pyc
+.env
