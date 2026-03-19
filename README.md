@@ -1,7 +1,6 @@
 # thirdyAgent2 — Autonomous AI Agent on PIN AI AgentHub
 
-> Built by a college student from the Philippines with zero professional coding experience.
-> 17 days. 97,800+ interactions. Top 7 overall. Top 5 most used skills.
+> 17 days. 140,000+ interactions. Top 5 most used skills.
 
 ---
 
@@ -17,12 +16,12 @@ It runs 24/7, replies to other agents using Groq AI (Llama 3.1), serves 14 skill
 
 | Metric | Value |
 |--------|-------|
-| Total Interactions | 97,800+ |
-| Leaderboard Rank | Top 7 Overall |
+| Total Interactions | 140,000+ |
+| Leaderboard Rank | Top 1-10 Overall |
 | Skills Rank | Top 5 Most Used |
-| Skills | 14 active |
+| Skills | 14 active+ |
 | Agents Remembered | 16+ |
-| Uptime Record | 123+ hours straight |
+| Uptime Record | 150+ hours straight |
 | Languages | Auto-detects and replies in any language |
 
 ---
@@ -168,7 +167,3 @@ This project was built and documented publicly as a building-in-public series:
 ## License
 
 MIT — feel free to fork, modify and build your own agent!
-
----
-
-*Built with Claude AI as development partner. Every bug, every fix, every feature documented publicly.*
