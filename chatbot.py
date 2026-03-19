@@ -1,7 +1,7 @@
 """
 ╔══════════════════════════════════════════════════════════════════════╗
 ║      THIRDY'S SMART CHAT BOT — thirdyAgent2 — PIN AI AGENTHUB       ║
-║      Gemini AI powered • Memory • Context • Smooth conversation      ║
+║      Lliama AI powered • Memory • Context • Smooth conversation      ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
 HOW TO RUN:
@@ -9,9 +9,9 @@ HOW TO RUN:
   Window 2 → ngrok.exe http 5000
   Window 3 → python chatbot.py
 
-OPTIONAL: Add Gemini AI for smarter replies
-  1. Get free API key at: https://aistudio.google.com
-  2. Set GEMINI_API_KEY below
+OPTIONAL: Add Llama AI for smarter replies
+  1. Get free API key at: https://console.groq.com
+  2. Set GROQ_API_KEY below
   3. If left empty, bot uses built-in smart replies
 """
 
