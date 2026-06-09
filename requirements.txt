@@ -1,2 +1,49 @@
-flask
-requests
+# thirdyAgent2 - requirements.txt
+# Pinned for Python 3.11 on Railway free tier + local Windows dev
+# Last updated: Batch A (Phase 8 + Phase 9)
+
+# -- Web framework
+flask==3.0.3
+gunicorn==22.0.0
+
+# -- HTTP client
+requests==2.32.3
+urllib3==2.2.2
+
+# -- Environment / config
+python-dotenv==1.0.1
+
+# -- Caching
+cachetools==5.3.3
+
+# -- RAG (Phase 9)
+# ChromaDB: local vector store with SQLite backend (no external server)
+# 0.4.x is stable on Windows; 0.5.x requires onnxruntime which is heavy
+chromadb==0.4.24
+
+# -- Async / concurrency: stdlib only (concurrent.futures, threading)
+
+# -- Utilities: all other imports are stdlib:
+# json, os, re, time, datetime, threading, importlib, subprocess,
+# urllib.parse, ipaddress, socket, math, random, typing
+
+
+# =====================================================================
+# BATCH B additions (uncomment when ready):
+# =====================================================================
+# python-telegram-bot==21.3.0   # Phase 7 - Telegram bot
+
+# =====================================================================
+# INSTALLATION NOTES
+# =====================================================================
+# Windows (local dev):
+#   chcp 65001
+#   pip install -r requirements.txt
+#
+# If on system Python without venv (Thirdy's setup):
+#   pip install -r requirements.txt --break-system-packages
+#
+# Railway: auto-detected from this file via Nixpacks
+#
+# chromadb on Windows may need:
+#   pip install chroma-hnswlib  (if binary wheel fails)

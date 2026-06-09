@@ -1,0 +1,47 @@
+# ── Secrets (NEVER commit) ──────────────────────────────
+.env
+
+# ── Runtime / auto-generated ────────────────────────────
+agent_memory.json
+agent_knowledge.json
+skill_log.txt
+replied_ids.txt
+greeted_agents.txt
+broadcast_log.txt
+watchdog_log.txt
+evolution_log.txt
+engine_state.json
+watchdog_state.json
+reload.flag
+
+# ── Logs ────────────────────────────────────────────────
+*.log
+agent_output.log
+chatbot_output.log
+skill_engine_output.log
+
+# ── Vector database (rebuild with build_rag.py) ─────────
+chroma_db/
+chroma_db/**
+embed_cache/
+
+# ── Python cache ────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environments ────────────────────────────────
+venv/
+env/
+.venv/
+
+# ── Windows / OS junk ───────────────────────────────────
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# ── Large binaries (not part of source) ─────────────────
+*.exe
+*.zip
