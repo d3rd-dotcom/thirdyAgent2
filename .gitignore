@@ -1,7 +1,14 @@
-# ── Secrets (NEVER commit) ──────────────────────────────
-.env
+# ═══════════════════════════════════════════════════════════
+#  thirdyAgent2 — .gitignore
+#  GitHub migration ready — protects secrets and runtime data
+# ═══════════════════════════════════════════════════════════
 
-# ── Runtime / auto-generated ────────────────────────────
+# ── Secrets (NEVER commit) ──────────────────────────────────
+.env
+.env.local
+.env.production
+
+# ── Runtime / auto-generated data ───────────────────────────
 agent_memory.json
 agent_knowledge.json
 skill_log.txt
@@ -14,34 +21,42 @@ engine_state.json
 watchdog_state.json
 reload.flag
 
-# ── Logs ────────────────────────────────────────────────
+# ── Auto-generated skill file (managed by skill_engine.py) ──
+skills_free_evolved.py
+
+# ── Logs ────────────────────────────────────────────────────
 *.log
 agent_output.log
 chatbot_output.log
 skill_engine_output.log
 
-# ── Vector database (rebuild with build_rag.py) ─────────
+# ── Vector database (rebuild with: python build_rag.py) ─────
 chroma_db/
-chroma_db/**
+qdrant_storage/
 embed_cache/
 
-# ── Python cache ────────────────────────────────────────
+# ── Python cache ────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 .Python
 
-# ── Virtual environments ────────────────────────────────
+# ── Virtual environments ─────────────────────────────────────
 venv/
 env/
 .venv/
+*.egg-info/
+dist/
+build/
 
-# ── Windows / OS junk ───────────────────────────────────
+# ── Windows / OS junk ────────────────────────────────────────
 desktop.ini
 Thumbs.db
 .DS_Store
 
-# ── Large binaries (not part of source) ─────────────────
-*.exe
-*.zip
+# ── Temp / misc ──────────────────────────────────────────────
+*.tmp
+*.bak
+cd
+python
