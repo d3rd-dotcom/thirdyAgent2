@@ -27,6 +27,8 @@ import re
 import time
 import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
+# CRIT-03 FIX: credentials from config.py — never hardcode
+from config import CEREBRAS_KEY, MISTRAL_KEY
 
 # ─────────────────────────────────────────────────────────────────────
 #  SENTIMENT SCORING — pure Python, no ML library needed
@@ -498,14 +500,14 @@ Be concise, data-driven, 5 lines max."""
     ai_providers = [
         {
             "url":     "https://api.cerebras.ai/v1/chat/completions",
-            "headers": {"Authorization": "Bearer csk-YOUR_CEREBRAS_KEY",
+            "headers": {"Authorization": f"Bearer {CEREBRAS_KEY}",
                        "Content-Type": "application/json"},
             "model":   "llama3.1-8b",
             "style":   "openai",
         },
         {
             "url":     "https://api.mistral.ai/v1/chat/completions",
-            "headers": {"Authorization": "Bearer YOUR_MISTRAL_KEY",
+            "headers": {"Authorization": f"Bearer {MISTRAL_KEY}",
                        "Content-Type": "application/json"},
             "model":   "mistral-small-latest",
             "style":   "openai",

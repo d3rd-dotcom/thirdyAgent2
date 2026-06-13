@@ -33,6 +33,13 @@ HOW TO RUN:
 
 import os
 import sys
+import io
+import functools
+# FIX: Windows cp1252 console crashes on emoji — force UTF-8 output
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+elif hasattr(sys.stdout, 'buffer'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 import json
 import time
 import datetime
@@ -62,13 +69,15 @@ SANDBOX_TIMEOUT = 8          # seconds per skill test
 MIN_SKILLS_KEEP = 5          # minimum evolved skills to preserve
 DEPRECATE_AFTER = 48         # hours before 0-call evolved skill is dropped
 
-API_KEY   = "pk_live_YOUR_AGENTHUB_API_KEY"
-AGENT_ID  = "thirdyAgent2-5dfce3"
-HUB       = "https://agents.pinai.tech"
-HEADERS   = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
-
-CEREBRAS_KEY = "csk-YOUR_CEREBRAS_KEY"
-MISTRAL_KEY  = "YOUR_MISTRAL_KEY"
+# CRIT-02 FIX: All credentials from config.py — never hardcode here
+from config import (
+    AGENTHUB_API_KEY as API_KEY,
+    AGENT_ID,
+    AGENTHUB_HUB_URL as HUB,
+    AGENTHUB_HEADERS as HEADERS,
+    CEREBRAS_KEY,
+    MISTRAL_KEY,
+)
 
 # ─────────────────────────────────────────────────────────────────────
 #  SAFE API WHITELIST — only these domains allowed in generated code
@@ -529,11 +538,18 @@ def sandbox_test(code, name):
                 "min": min, "max": max, "sum": sum, "round": round,
                 "abs": abs, "sorted": sorted, "isinstance": isinstance,
                 "type": type, "repr": repr, "hasattr": hasattr,
-                "getattr": getattr, "setattr": None, "delattr": None,
+                "setattr": None, "delattr": None,
             }
+            # CRIT-07 FIX: wrap requests with a hard 3s timeout so generated
+            # skills cannot hang the sandbox thread beyond SANDBOX_TIMEOUT
+            class _SandboxRequests:
+                """requests proxy with enforced timeout — prevents sandbox hangs."""
+                get  = staticmethod(functools.partial(requests.get,  timeout=3))
+                post = staticmethod(functools.partial(requests.post, timeout=3))
+
             namespace = {
                 "__builtins__": safe_builtins,
-                "requests": requests,
+                "requests": _SandboxRequests(),
                 "datetime": datetime,
                 "re": re,
                 "json": json,

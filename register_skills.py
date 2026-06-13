@@ -15,14 +15,13 @@ import json
 #  CONFIG
 # ─────────────────────────────────────────────────────────────────────
 
-API_KEY  = "pk_live_YOUR_AGENTHUB_API_KEY"
-AGENT_ID = "thirdyAgent2-5dfce3"
-HUB      = "https://agents.pinai.tech"
-
-HEADERS = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type":  "application/json",
-}
+# CRIT-04 FIX: credentials from config.py — never hardcode
+from config import (
+    AGENTHUB_API_KEY as API_KEY,
+    AGENT_ID,
+    AGENTHUB_HUB_URL as HUB,
+    AGENTHUB_HEADERS as HEADERS,
+)
 
 # ─────────────────────────────────────────────────────────────────────
 #  ALL SKILLS TO REGISTER

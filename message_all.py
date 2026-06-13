@@ -24,16 +24,15 @@ import os
 #  CONFIG
 # ─────────────────────────────────────────────────────────────────────
 
-API_KEY  = "pk_live_YOUR_AGENTHUB_API_KEY"
-HUB      = "https://agents.pinai.tech"
-MY_ID    = "thirdyAgent2-5dfce3"
+# CRIT-04 FIX: credentials from config.py — never hardcode
+from config import (
+    AGENTHUB_API_KEY as API_KEY,
+    AGENT_ID         as MY_ID,
+    AGENTHUB_HUB_URL as HUB,
+    PUBLIC_URL       as NGROK,
+    AGENTHUB_HEADERS as HEADERS,
+)
 MY_NAME  = "thirdyAgent2"
-NGROK    = "https://shamefaced-controvertibly-dorthey.ngrok-free.dev"
-
-HEADERS = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type":  "application/json",
-}
 
 BASE_DIR      = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE      = os.path.join(BASE_DIR, "broadcast_log.txt")

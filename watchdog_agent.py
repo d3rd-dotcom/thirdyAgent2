@@ -45,10 +45,13 @@ BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
 WATCHDOG_LOG    = os.path.join(BASE_DIR, "watchdog_log.txt")
 WATCHDOG_STATE  = os.path.join(BASE_DIR, "watchdog_state.json")
 
-API_KEY   = "pk_live_YOUR_AGENTHUB_API_KEY"
-AGENT_ID  = "thirdyAgent2-5dfce3"
-HUB       = "https://agents.pinai.tech"
-HEADERS   = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
+# CRIT-05 FIX: credentials from config.py — never hardcode
+from config import (
+    AGENTHUB_API_KEY as API_KEY,
+    AGENT_ID,
+    AGENTHUB_HUB_URL as HUB,
+    AGENTHUB_HEADERS as HEADERS,
+)
 
 CHECK_INTERVAL  = 30    # seconds between health checks
 RESTART_DELAY   = 5     # seconds to wait before restarting
