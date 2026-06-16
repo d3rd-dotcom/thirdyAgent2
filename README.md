@@ -1,160 +1,224 @@
-# thirdyAgent2 — Autonomous AI Agent on PIN AI AgentHub
+# thirdyAgent2
 
-> 3 months development. 140,000+ interactions. Top 5 most used skills.
+Autonomous AI agent 
 
----
-
-## What is thirdyAgent2?
-
-thirdyAgent2 is a fully autonomous AI agent running on [PIN AI AgentHub](https://agenthub.pinai.tech) — a network where AI agents communicate, collaborate, and share skills with each other.
-
-It runs 24/7, replies to other agents using Groq AI (Llama 3.1), serves 14 skills to the network, and remembers every agent it has ever talked to.
+> Built using free-tier APIs and free AI providers.
 
 ---
 
-## Live Stats
+## Status
 
 | Metric | Value |
 |--------|-------|
-| Total Interactions | 140,000+ |
-| Leaderboard Rank | Top 1-10 Overall |
-| Skills Rank | Top 5 Most Used |
-| Skills | 14 active+ |
-| Agents Remembered | 16+ |
-| Uptime Record | 150+ hours straight |
-| Languages | Auto-detects and replies in any language |
+| Interactions | 766K+ |
+| Leaderboard Rank | ~#9 |
+| Total Skills | 46 (39 free, 7 premium) |
+| Uptime | Local + ngrok (Railway deployment in progress) |
+| Revenue Target | ~$1,350/month USDC |
 
 ---
 
-## Features
+## What It Does
 
-- **14 Skills** — crypto prices, weather, jokes, wisdom, random numbers, coin flip, time, echo, network learning, knowledge sharing, social analysis, personal memory, agent status
-- **Groq AI Integration** — Llama 3.1-8b-instant with automatic model fallback chain
-- **Persistent Memory** — remembers every agent and conversation across restarts
-- **Auto-greet** — sends a warm introduction to every new agent automatically
-- **Morning Broadcast** — messages all known agents at 9AM daily with BTC price
-- **Dynamic skill.md** — auto-updating documentation page for the network
-- **Agent Status Skill** — live uptime, message count, memory stats on demand
-- **Multilingual** — automatically detects and replies in the same language as the other agent
+thirdyAgent2 is a callable AI agent that other agents and users on AgentHub can invoke via REST API. It provides financial intelligence, crypto market data, DeFi analysis, social sentiment scoring, and general utility skills — with free skills returning instant pure-Python responses and premium skills routing through a multi-LLM AI chain.
 
 ---
 
-## How It Works
+## Skills
 
-thirdyAgent2 runs as 3 processes simultaneously:
+### Free (39) — instant, no LLM
+
+**Core:** greet, random, joke, wisdom, flip, time, echo, weather, crypto
+
+**Crypto:** crypto_pulse, btc_network_intel, defi_pulse, dex_scanner, crypto_news_feed
+
+**Science:** space_explorer, math_solver, earth_watch, astronomy_feed, science_facts
+
+**Entertainment:** anime_universe, fun_pack, gamer_hub, quotes_wisdom, daily_briefing
+
+**Knowledge:** tech_news_feed, world_knowledge, paper_search, dev_toolkit, web_extractor
+
+**Business:** global_economy, market_scanner, forex_tracker, startup_intel, business_news
+
+**Sentiment:** sentiment_pulse
+
+**RAG:** knowledge_query, rag_status
+
+**Auto-evolved:** country_facts, isp_lookup, wikipedia_summary, air_quality, random_quiz
+
+### Premium (7) — AI-powered, USDC-priced
+
+| Skill | Price | Description |
+|-------|-------|-------------|
+| crypto_intelligence | 0.25 USDC | Live price + Fear/Greed + Cerebras AI analysis |
+| market_signal | 0.50 USDC | BUY/SELL/HOLD signal from 6 data sources + RSI |
+| news_alpha | 0.25 USDC | Crypto news impact analysis via Mistral |
+| defi_yield_finder | 0.50 USDC | DeFiLlama yield scan + NVIDIA NIM risk rating |
+| portfolio_analyzer | 1.00 USDC | Multi-asset portfolio assessment via NVIDIA NIM |
+| social_alpha | 0.50 USDC | Reddit + HN sentiment with AI interpretation |
+| viral_signal | 0.25 USDC | Emerging narrative detection across Reddit subs |
+
+---
+
+## AI Provider Chain
+
+Premium skills use automatic fallback across providers:
 
 ```
-Window 1 — agent.py     → Flask server serving 14 skills on port 5000
-Window 2 — ngrok        → Exposes localhost:5000 to the public internet
-Window 3 — chatbot.py   → Polls AgentHub every 15s, reads and replies to messages
+Cerebras → NVIDIA NIM → Gemini 2.0 Flash → GitHub Models (Llama 3.3 70B)
+         → Cloudflare Workers AI → Mistral → Cohere
+```
+
+If a provider is rate-limited or unavailable, the next one in the chain is used automatically.
+
+---
+
+## Architecture
+
+```
+Desktop/
+├── agent.py                 Flask :5000 — main skill server + webhook handler
+├── chatbot.py               AgentHub polling, auto-reply, broadcast loop (3s)
+├── skill_engine.py          Autonomous skill builder — runs every 6 hours
+├── watchdog_agent.py        Process monitor — auto-restarts crashed processes
+├── config.py                Centralised .env loader for all secrets
+├── skills_ai.py             Premium AI skill handlers
+├── skills_free_*.py         Free skill packs (crypto, science, entertainment, etc.)
+├── skills_free_evolved.py   Auto-generated skills from skill_engine.py
+├── rag/                     ChromaDB RAG module
+│   ├── chunker.py
+│   ├── embedder.py          Cohere embed-english-v3.0
+│   ├── store.py             ChromaDB persistent client
+│   ├── retriever.py         MMR reranking retriever
+│   ├── rag_skill.py         knowledge_query + rag_status skill handlers
+│   └── ingestor.py          Document ingestion pipeline
+└── sources/                 Knowledge base fetchers
+    ├── fetch_whitepapers.py  BTC, ETH, SOL, DeFi, AgentHub context
+    └── fetch_defi_docs.py    DeFiLlama protocols, yield pools, Aave V3
 ```
 
 ---
 
-## Tech Stack
+## RAG Knowledge Base
 
-| Tool | Purpose |
-|------|---------|
-| Python 3 | Core language |
-| Flask | Skill server |
-| Groq API | AI replies (llama-3.1-8b-instant) |
-| ngrok | Public tunnel |
-| CoinGecko API | Live crypto prices |
-| Open-Meteo API | Live weather data |
-| JokeAPI | Programming jokes |
-| PIN AI AgentHub | Agent network |
+Built with ChromaDB + Cohere `embed-english-v3.0`. Currently indexes 58 chunks from:
+
+- Bitcoin Whitepaper (Satoshi Nakamoto, 2008)
+- Ethereum overview (EVM, PoS, L2 scaling)
+- Solana overview (PoH, Sealevel, Turbine)
+- DeFi fundamentals (AMMs, lending, yield farming, risk)
+- AgentHub platform context
+- CoinGecko top-20 live market data
+- DeFiLlama top protocols, yield pools, and chain TVL
+- Aave V3 Ethereum address book
+
+Query with `skill=knowledge_query, {"query": "What is Aave's liquidation threshold?"}`
 
 ---
 
-## Getting Started
+## Autonomous Skill Engine
 
-### 1. Clone the repo
+`skill_engine.py` runs every 6 hours:
+
+1. Audits `skill_log.txt` for never-called or cold skills
+2. Scans AgentHub for skill gaps (skills other agents have that thirdyAgent2 lacks)
+3. Prompts Cerebras AI to generate a new Python skill handler
+4. Runs the code through a safety scanner (blocked patterns, domain whitelist)
+5. Executes in a sandboxed namespace with 8-second timeout
+6. Deploys to `skills_free_evolved.py` and signals hot-reload to `agent.py`
+7. Deprecates skills with 0 calls after 48 hours (minimum 5 preserved)
+
+**Cycle stats:** 92 cycles run → 11 skills deployed → 6 deprecated
+
+---
+
+## Calling a Skill
+
 ```bash
-git clone https://github.com/d3rd-dotcom/thirdyAgent2
-cd thirdyAgent2
-```
-
-### 2. Install dependencies
-```bash
-pip install flask requests
-```
-
-### 3. Add your API keys
-
-Open `agent.py` and `chatbot.py` and replace the placeholders:
-```python
-API_KEY      = "YOUR_AGENTHUB_API_KEY_HERE"   # from agenthub.pinai.tech
-GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"       # from console.groq.com (free)
-AGENT_ID     = "YOUR_AGENT_ID_HERE"           # from agenthub.pinai.tech
-NGROK_URL    = "YOUR_NGROK_URL_HERE"          # from ngrok after running it
-```
-
-### 4. Run all 3 windows
-
-**Window 1 — Start the skill server:**
-```bash
-python agent.py
-```
-
-**Window 2 — Start ngrok tunnel:**
-```bash
-ngrok http 5000
-```
-Copy the forwarding URL (e.g. `https://xyz.ngrok-free.dev`) and paste it as your `NGROK_URL`.
-
-**Window 3 — Start the chatbot:**
-```bash
-python chatbot.py
-```
-
-### 5. Register on AgentHub
-```bash
-curl -X PUT https://agents.pinai.tech/api/agents/YOUR_AGENT_ID \
+curl -X POST https://agents.pinai.tech/api/call \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"webhook_url": "YOUR_NGROK_URL/webhook", "skills": [{"name": "greet"}, {"name": "crypto"}, {"name": "joke"}]}'
+  -d '{
+    "agent_id": "thirdyAgent2-5dfce3",
+    "skill": "crypto",
+    "parameters": {"coin": "bitcoin"}
+  }'
 ```
 
-Your agent is now live on the PIN AI network!
+Full skill documentation: `GET /skill.md` on the agent webhook URL.
 
 ---
 
-## Skills Reference
+## Free Data Sources
 
-| Skill | Description | Example Parameter |
-|-------|-------------|------------------|
-| `greet` | Friendly greeting | `{"name": "friend"}` |
-| `crypto` | Live crypto price | `{"coin": "bitcoin"}` |
-| `weather` | Live weather | `{"city": "Manila"}` |
-| `joke` | Programming joke | `{}` |
-| `wisdom` | Life advice | `{}` |
-| `random` | Random number | `{"min": 1, "max": 100}` |
-| `flip` | Coin flip | `{}` |
-| `time` | UTC time | `{}` |
-| `echo` | Echo message | `{"message": "Hello!"}` |
-| `learn_from_agents` | Scan network | `{}` |
-| `share_knowledge` | Share network data | `{}` |
-| `social_analysis` | Network trends | `{}` |
-| `personal_memory` | Past interactions | `{"agent_name": "AgentName"}` |
-| `agent_status` | Live status report | `{}` |
+All free skills use public APIs with no key required:
+
+CoinGecko · DexScreener (300 RPM) · DeFiLlama · Mempool.space ·
+Fear & Greed Index · Frankfurter/ECB forex · Yahoo Finance ·
+Semantic Scholar (250M papers) · Hacker News · Reddit public JSON ·
+REST Countries · World Bank · Open-Meteo · WorldTimeAPI ·
+open-notify.org (ISS) · USGS Earthquakes · Newton Math API ·
+Jikan/MyAnimeList · JokeAPI · DEV.to · ZenQuotes · ipapi.co
 
 ---
 
-## Project Journey
+## Security Notes
 
-This project was built and documented publicly as a building-in-public series:
-
-- **Day 1** — Built first working chatbot
-- **Day 2** — Added 4 skills + memory
-- **Day 3** — Fixed double-reply bug, persistent memory
-- **Day 4** — Integrated Groq AI after 3 failed Gemini attempts
-- **Day 5** — Published live skill.md documentation
-- **Day 6** — Added agent_status skill, other agents calling skills overnight
-- **Day 10** — 123h uptime, Indonesian agent auto-detected and replied in Bahasa
-- **Day 12** — Top 7 overall, Top 5 skills, 97,800+ interactions
-- **Day 17** — Agent Hangouts live, 44 nodes 121 links in network graph
+- All secrets stored in `.env`, never hardcoded (SA-01)
+- SSRF protection on web_extractor with private IP blocklist (SA-03)
+- Thread-safe message deduplication with `threading.Lock` (SA-05)
+- HMAC webhook signature verification in progress (SA-04, Batch C)
+- `exec()` sandbox isolation in skill_engine.py (SA-02, deferred)
 
 ---
+
+## Build Progress
+
+| Phase | Feature | Status |
+|-------|---------|--------|
+| P0 | Flask agent, AgentHub registration | ✅ Complete |
+| P1 | Auto-import packs, skill logging, 60s cache | ✅ Complete |
+| P2 | 25 free skills across 5 packs | ✅ Complete |
+| P3 | 5 premium AI skills, multi-LLM chain | ✅ Complete |
+| P4 | Social sentiment engine (Reddit + HN) | ✅ Complete |
+| P5 | Autonomous skill engine | ✅ Complete |
+| P8 | Gemini + GitHub Models added to AI chain | ✅ Complete |
+| P9 | ChromaDB RAG knowledge base | ✅ Complete |
+| P7 | Telegram digest bot | ✅ Complete  |
+| P10 | LangChain / OpenAI / MCP adapters | 🔄 In Progress (Batch B) |
+| P6 | Railway 24/7 deployment | ⏳ Batch C (after B tests pass) |
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/d3rd-dotcom/thirdyAgent2.git
+cd thirdyAgent2
+pip install -r requirements.txt
+cp .env.example .env
+# Fill in your API keys
+```
+
+**Run order (4 windows):**
+```
+W1: python agent.py          # Flask :5000 — start first
+W2: ngrok http 5000          # tunnel (retired after Railway deploy)
+W3: python chatbot.py        # polling + broadcast
+W4: python skill_engine.py   # autonomous builder
+```
+
+**Build RAG index (once):**
+```bash
+python build_rag.py
+python build_rag.py --verify
+```
+
+---
+
+## License
+
+MIT — open source at [github.com/d3rd-dotcom/thirdyAgent2](https://github.com/d3rd-dotcom/thirdyAgent2)
 
 ## Follow the Journey
 
