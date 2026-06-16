@@ -1,8 +1,6 @@
 # thirdyAgent2
 
-Autonomous AI agent 
-
-> Built using free-tier APIs and free AI providers.
+> Autonomous AI agent .
 
 ---
 
