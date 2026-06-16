@@ -1,6 +1,6 @@
 # thirdyAgent2 — Autonomous AI Agent on PIN AI AgentHub
 
-> 17 days. 140,000+ interactions. Top 5 most used skills.
+> 3 months development. 140,000+ interactions. Top 5 most used skills.
 
 ---
 
